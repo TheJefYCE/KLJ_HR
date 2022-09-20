@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en-MY">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>UpdateEmp - KLY HR</title>
+        <link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet'>
+        <link rel="stylesheet" href="css/stylemain.css">
+        <style>
+            body {
+                font-family: 'Montserrat';
+            }
+        </style>
+    </head>
+    <body>
+        <header>
+            <img src="images/kly.png" class="kly_logo" alt="KLY logo", width="200px">
+            <div class="navbar">
+                <nav>
+                    <ul>
+                       <li><a href="index.html" class="zoom">Home</a></li>
+                       <!-- <li><a href="add_employees.html" class="zoom">Add Employees</a></li> -->
+                       <li><a href="get_employees.html" class="zoom">Get Employees</a></li>
+                       <!-- <li><a href="update_employees.html" class="zoom">Update Employees</a></li> -->
+                       <!-- <li><a href="delete_employees.html" class="zoom">Delete Employees</a></li> -->
+                    </ul>
+                </nav>  
+            </div>
+        </header>
+
+        <div class="content">
+            <form action="/update" autocomplete="on" method = "POST" enctype="multipart/form-data">
+
+                <h2 style="color: grey">Update Employee Details</h2>
+
+                <br>Employee ID:<br> {{ id }} <br><br>
+
+		  		First Name:<br> <input style="height:25px;font-size:14pt;color:grey;" type="text" name="first_name" ><br><br>
+
+		  		Last Name:<br> <input style="height:25px;font-size:14pt;color:grey;" type="text" name="last_name"><br><br>
+
+		  		Primary Skills:<br> <input style="height:25px;font-size:14pt;color:grey;" type="text" name="pri_skill"><br><br>
+
+		  		Location:<br> <input style="height:25px;font-size:14pt;color:grey;" type="text" name="location"><br><br>
+
+		  		Image: <input type=file name="emp_image_file" style="height:25px;font-size:14pt;color:grey;"> <br><br>
+
+		  		<button type="submit" style="background: grey; height: 45px; width: 200px; color: white; size: 5; font:oblique;">UPDATE DATABASE</button>
+
+			</form>
+        </div>
+
+        <footer>
+            <div class="copyright">
+                <caption >Copyright © 2022 klyhr.com™. All rights reserved.</caption>
+            </div>
+        </footer>
+    </body>
+</html>

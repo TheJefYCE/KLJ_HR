@@ -1,0 +1,121 @@
+body {
+    background-color: #194569;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    color: aliceblue;
+    padding: 10px;
+    margin-left: auto;
+    margin-right: auto;
+}
+header {
+    padding-left: 5px;
+    padding-right: 5px;
+    padding-top: 15px;
+    padding-bottom: 10px;
+}
+
+.kly_logo {
+    margin-left: auto; 
+    margin-right: auto; 
+    display: block;
+}
+
+nav {
+    width: fit-content;
+    padding: auto;
+    font-size: 15px;
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+nav ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 5px;
+    overflow: hidden;
+    background-color: rgb(75, 110, 142);
+}
+
+nav li {
+    float: left;
+}
+
+nav li a {
+    font-size: 15px;
+    font-weight: 700;
+    display: inline-block;
+    color: white;
+    text-align: center;
+    padding: 10px 20px;
+    text-decoration: none;
+}
+
+nav li a:hover {
+    background-color: #71a0d5;
+}
+
+.zoom {
+    transition: transform .5s;
+    margin: 0 auto;
+}
+
+.zoom:hover {
+transform: scale(1.2); 
+}
+
+div.content {
+    padding: 10px;
+    width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    height: max-content;
+    padding-bottom: 100px;
+}
+
+button {
+    background-color: cadetblue;
+    width: 200px;
+    height: 100px;
+    margin: 5px;
+    font-weight: bold;
+    font-family: "Montserrat";
+    font-size: 14px;
+    border-radius: 10px;
+}
+
+footer{
+    height: 60px;
+    display: grid;
+    margin-top: 5px;
+    padding-top: 15px;
+    padding-bottom: 20px;
+    left: 10px;
+    right: 10px;
+    bottom: 0;
+    position: fixed;
+    background-color: #194569;
+}
+
+footer .copyright {
+    padding-top: 15px;
+    padding-bottom: 5px;
+    padding-left: 30px;
+    padding-right: 30px;
+    text-align: center;
+    display: inline-table;
+    background-color: rgb(95, 139, 180);
+    color: rgb(211, 211, 211);
+    border-bottom-left-radius: 15px;
+    border-bottom-right-radius: 15px;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    font-weight: 900;
+    left: 10px;
+    right: 10px;
+    bottom: 20px;
+    margin-left: auto;
+    margin-right: auto;
+}
