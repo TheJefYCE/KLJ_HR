@@ -1,6 +1,0 @@
-customhost = "database-bait3273.cbgc3gnvgfld.us-east-1.rds.amazonaws.com"
-customuser = "BAIT3273"
-custompass = "bait3273"
-customdb = "BAIT3273"
-custombucket = "kohkuanjian-bucket"
-customregion = "us-east-1"
