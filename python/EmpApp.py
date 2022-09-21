@@ -146,7 +146,7 @@ def UpdateEmp():
     if emp_image_file.filename == "":
         return "Please select a file"
 
-    if emp_resume.filename == "":
+    if emp_resume_file.filename == "":
         return "Please select a file"
 
     try:
@@ -191,8 +191,8 @@ def UpdateEmp():
     return render_template('show_employee_data.html', 
                             id=emp_id,
                             fname=first_name,
-                            lname=last_name
-                            interest=pri_skill
+                            lname=last_name,
+                            interest=pri_skill,
                             location=location
                             )
     
