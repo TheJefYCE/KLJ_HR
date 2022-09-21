@@ -4,7 +4,7 @@ import os
 import boto3
 import io
 from config import *
-from matplotlib.pyplot import mpimg
+import matplotlib.image as mpimg
 
 app = Flask(__name__)
 
