@@ -2,7 +2,9 @@ from flask import Flask, render_template, request
 from pymysql import connections
 import os
 import boto3
+import io
 from config import *
+from matplotlib.image import mpimg
 
 app = Flask(__name__)
 
@@ -69,15 +71,10 @@ def AddEmp():
             else:
                 s3_location = '-' + s3_location
 
-            object1_url = "https://s3{0}.amazonaws.com/{1}/{2}".format(
+            object_url = "https://s3{0}.amazonaws.com/{1}/{2}".format(
                 s3_location,
                 custombucket,
                 emp_image_file_name_in_s3)
-
-            object2_url = "https://s3{0}.amazonaws.com/{1}/{2}".format(
-                s3_location,
-                custombucket,
-                emp_resume_name_in_s3)
 
         except Exception as e:
             return str(e)
@@ -112,11 +109,6 @@ def FetchData():
             object.download_fileobj(file_stream) 
             img = mpimg.imread(file_stream)
 
-            object = bucket.Object(emp_resume_name_in_s3) 
-            file_stream = io.StringIO() 
-            object.download_fileobj(file_stream) 
-            rsm = mpimg.imread(file_stream)
-
         except Exception as e:
             return str(e)
 
@@ -127,8 +119,7 @@ def FetchData():
     return render_template('add_employees_successful.html', 
                            id=emp_id, 
                            var=var,
-                           image_url=img,
-                           resume_url=rsm)
+                           image_url=img)
 
 @app.route("/update", methods=['POST'])
 def UpdateEmp():
@@ -202,9 +193,6 @@ def DeleteEmp():
 
     query = "DELETE FROM employee WHERE emp_id=%s)"
     cursor = db_conn.cursor()
-
-    if emp_image_file.filename == "":
-        return "Please select a file"
 
     try:
 
