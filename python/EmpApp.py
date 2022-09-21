@@ -180,13 +180,7 @@ def UpdateEmp():
 
     print("all modification done...")
     return render_template('show_employee_data.html', 
-                            image_url=object1_url,
-                            id=emp_id,
-                            fname=first_name,
-                            lname=last_name,
-                            interest=pri_skill,
-                            location=location
-                            )
+                            id=emp_id)
     
 @app.route("/delete", methods=['POST'])
 def DeleteEmp():
