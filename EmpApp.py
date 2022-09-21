@@ -6,7 +6,7 @@ import io
 from config import *
 import matplotlib.image as mpimg
 
-app = Flask(__name__)
+application = Flask(__name__)
 
 bucket = custombucket
 region = customregion
@@ -23,17 +23,17 @@ output = {}
 table = 'employee'
 
 
-@app.route("/", methods=['GET', 'POST'])
+@application.route("/", methods=['GET', 'POST'])
 def home():
     return render_template('index.html')
 
 
-@app.route("/about", methods=['POST'])
+@application.route("/about", methods=['POST'])
 def about():
     return render_template('www.intellipaat.com')
 
 
-@app.route("/addemp", methods=['POST'])
+@application.route("/addemp", methods=['POST'])
 def AddEmp():
     emp_id = request.form['emp_id']
     first_name = request.form['first_name']
@@ -85,7 +85,7 @@ def AddEmp():
     print("all modification done...")
     return render_template('add_employees_successful.html', name=emp_name)
 
-@app.route("/fetchdata", methods=['POST'])
+@application.route("/fetchdata", methods=['POST'])
 def FetchData():
     emp_id = request.form['emp_id']
 
@@ -121,7 +121,7 @@ def FetchData():
                            var=var,
                            image_url=img)
 
-@app.route("/update", methods=['POST'])
+@application.route("/update", methods=['POST'])
 def UpdateEmp():
     emp_id = request.form['emp_id']
     first_name = request.form['first_name']
@@ -182,7 +182,7 @@ def UpdateEmp():
     return render_template('show_employee_data.html', 
                             id=emp_id)
     
-@app.route("/delete", methods=['POST'])
+@application.route("/delete", methods=['POST'])
 def DeleteEmp():
     emp_id = request.form['emp_id']
 
@@ -215,4 +215,4 @@ def DeleteEmp():
         
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=80, debug=True)
+    application.run(host='0.0.0.0', port=80, debug=True)
