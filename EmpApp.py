@@ -28,10 +28,21 @@ def home():
     return render_template('index.html')
 
 
-@application.route("/about", methods=['POST'])
+@application.route("/add", methods=['GET'])
 def about():
-    return render_template('www.intellipaat.com')
+    return render_template('add_employee.html')
 
+@application.route("/get", methods=['GET'])
+def about():
+    return render_template('get_employee.html')
+
+@application.route("/up", methods=['GET'])
+def about():
+    return render_template('update_employees.html')
+
+@application.route("/del", methods=['GET'])
+def about():
+    return render_template('delete_employees.html')
 
 @application.route("/addemp", methods=['POST'])
 def AddEmp():
