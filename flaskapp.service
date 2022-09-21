@@ -2,10 +2,9 @@
 Description=Gunicorn instance to serve Flask
 After=network.target
 [Service]
-User=root
-Group=www-data
+User=ec2-user
+Group=ec2-user
 WorkingDirectory=/home/ec2-user/KLJ_HR
-Environment="PATH=/root/project/venv/bin"
 ExecStart=/usr/local/bin/gunicorn EmpApp
 [Install]
 WantedBy=multi-user.target
