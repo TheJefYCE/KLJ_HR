@@ -44,6 +44,10 @@ def updatepage():
 def deletepage():
     return render_template('delete_employees.html')
 
+@app.route("/portfolio", methods=['GET'])
+def deletepage():
+    return render_template('portfolio.html')
+
 @app.route("/addemp", methods=['POST'])
 def AddEmp():
     emp_id = request.form['emp_id']
@@ -52,7 +56,6 @@ def AddEmp():
     pri_skill = request.form['pri_skill']
     location = request.form['location']
     emp_image_file = request.files['emp_image_file']
-    emp_resume_file = request.files['emp_resume_file']
 
     insert_sql = "INSERT INTO employee VALUES (%s, %s, %s, %s, %s)"
     cursor = db_conn.cursor()
@@ -66,14 +69,13 @@ def AddEmp():
         db_conn.commit()
         emp_name = "" + first_name + " " + last_name
         # Uplaod image file in S3 #
-        emp_image_file_name_in_s3 = "emp-id-" + str(emp_id) + "_image_file"
+        emp_image_file_name_in_s3 = "emp-id-" + str(emp_id) + "_image_file.jpg"
         emp_resume_name_in_s3 = "emp-id-" + str(emp_id) + "_resume"
         s3 = boto3.resource('s3')
 
         try:
             print("Data inserted in MySQL RDS... uploading image to S3...")
             s3.Bucket(custombucket).put_object(Key=emp_image_file_name_in_s3, Body=emp_image_file)
-            s3.Bucket(custombucket).put_object(Key=emp_resume_name_in_s3, Body=emp_resume_file)
             bucket_location = boto3.client('s3').get_bucket_location(Bucket=custombucket)
             s3_location = (bucket_location['LocationConstraint'])
 
@@ -110,8 +112,7 @@ def FetchData():
             var = detail
 
         # Declaring the image file name
-        emp_image_file_name_in_s3 = "emp-id-" + str(emp_id) + "_image_file"
-        emp_resume_name_in_s3 = "emp-id-" + str(emp_id) + "_resume"
+        emp_image_file_name_in_s3 = "emp-id-" + str(emp_id) + "_image_file.jpg"
         s3 = boto3.resource('s3')
 
         try:
@@ -139,52 +140,14 @@ def UpdateEmp():
     last_name = request.form['last_name']
     pri_skill = request.form['pri_skill']
     location = request.form['location']
-    emp_image_file = request.files['emp_image_file']
-    emp_resume_file = request.files['emp_resume_file']
 
     insert_sql = "INSERT INTO employee VALUES (%s, %s, %s, %s, %s)"
     cursor = db_conn.cursor()
-
-    if emp_image_file.filename == "":
-        return "Please select a file"
-
-    if emp_resume_file.filename == "":
-        return "Please select a file"
 
     try:
 
         cursor.execute(insert_sql, (emp_id, first_name, last_name, pri_skill, location))
         db_conn.commit()
-        emp_name = "" + first_name + " " + last_name
-        # Uplaod image file in S3 #
-        emp_image_file_name_in_s3 = "emp-id-" + str(emp_id) + "_image_file"
-        emp_resume_name_in_s3 = "emp-id-" + str(emp_id) + "_resume"
-        s3 = boto3.resource('s3')
-
-        try:
-            print("Data inserted in MySQL RDS... uploading image to S3...")
-            s3.Bucket(custombucket).put_object(Key=emp_image_file_name_in_s3, Body=emp_image_file)
-            s3.Bucket(custombucket).put_object(Key=emp_resume_name_in_s3, Body=emp_resume_file)
-            bucket_location = boto3.client('s3').get_bucket_location(Bucket=custombucket)
-            s3_location = (bucket_location['LocationConstraint'])
-
-            if s3_location is None:
-                s3_location = ''
-            else:
-                s3_location = '-' + s3_location
-
-            object1_url = "https://s3{0}.amazonaws.com/{1}/{2}".format(
-                s3_location,
-                custombucket,
-                emp_image_file_name_in_s3)
-
-            object2_url = "https://s3{0}.amazonaws.com/{1}/{2}".format(
-                s3_location,
-                custombucket,
-                emp_resume_name_in_s3)
-
-        except Exception as e:
-            return str(e)
 
     finally:
         cursor.close()
@@ -206,13 +169,11 @@ def DeleteEmp():
         db_conn.commit()
         # Uplaod image file in S3 #
         emp_image_file_name_in_s3 = "emp-id-" + str(emp_id) + "_image_file"
-        emp_resume_name_in_s3 = "emp-id-" + str(emp_id) + "_resume"
         s3 = boto3.resource('s3')
 
         try:
             print("Data removed from MySQL RDS... deleting related files in S3...")
             s3.Object(custombucket, emp_image_file_name_in_s3).delete()
-            s3.Object(custombucket, emp_resume_name_in_s3).delete()
 
         except Exception as e:
             return str(e)
