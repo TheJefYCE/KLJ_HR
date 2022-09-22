@@ -45,7 +45,7 @@ def deletepage():
     return render_template('delete_employees.html')
 
 @app.route("/portfolio", methods=['GET'])
-def deletepage():
+def aboutuspage():
     return render_template('portfolio.html')
 
 @app.route("/addemp", methods=['POST'])
