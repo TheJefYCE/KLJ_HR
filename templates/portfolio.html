@@ -6,29 +6,32 @@
     <title>KLY Portfolio</title>
     <meta name='viewport' content='width=device-width, initial-scale=1'>
     <link rel="stylesheet" type= "text/css" media="screen" href="{{ url_for('static', filename='style/stylemain.css')}}">
-        <style>
-            body {
-                font-family: 'Montserrat';
-            }
-        </style>
+    <style>
+        body {
+            font-family: 'Montserrat';
+        }
+    </style>
 </head>
 <body>
-    <header><h1>KLJ Portfolio</h1></header>
+    <header>
+        <img src="{{ url_for('static', filename='images/kly.png')}}" class="kly_logo" alt="KLY logo", width="200px">
+        <h1>Portfolio</h1>
+    </header>
     <div class="content">
     <h2>Team Members : </h2>
     <h3>
         <ol>
             <li>Koh Kuan Jian</li>
             <br><br>
-            <img src="https://kohkuanjian-bucket.s3.amazonaws.com/Stuard.jpg" alt="Koh Kuan Jian" style="width:200px;height:250px;">
+            <img src="https://kohkuanjian-bucket.s3.amazonaws.com/Stuard.jpg" alt="Koh Kuan Jian" style="width:200px">
             <br><br>
             <li>Lim Pei Ying</li>
             <br><br>
-            <img src="https://kohkuanjian-bucket.s3.amazonaws.com/Stuard.jpg" alt="Lim Pei Ying" style="width:200px;height:250px;">
+            <img src="https://kohkuanjian-bucket.s3.amazonaws.com/Stuard.jpg" alt="Lim Pei Ying" style="width:200px">
             <br><br>
             <li>Yap Cher En</li>
             <br><br>
-            <img src="https://kohkuanjian-bucket.s3.amazonaws.com/Stuard.jpg" alt="Yap Cher En" style="width:200px;height:250px;">
+            <img src="https://kohkuanjian-bucket.s3.amazonaws.com/Stuard.jpg" alt="Yap Cher En" style="width:200px">
         </ol>
     </h3>
     </div>
