@@ -30,11 +30,11 @@ def home():
 
 @app.route("/add", methods=['GET','POST'])
 def addpage():
-    return render_template('add_employee.html')
+    return render_template('add_employees.html')
 
 @app.route("/get", methods=['GET'])
 def getpage():
-    return render_template('get_employee.html')
+    return render_template('get_employees.html')
 
 @app.route("/up", methods=['GET'])
 def updatepage():
