@@ -6,7 +6,7 @@ import io
 from config import *
 import matplotlib.image as mpimg
 
-application = Flask(__name__)
+app = Flask(__name__)
 
 bucket = custombucket
 region = customregion
@@ -23,28 +23,28 @@ output = {}
 table = 'employee'
 
 
-@application.route("/", methods=['GET', 'POST'])
+@app.route("/", methods=['GET', 'POST'])
 def home():
     return render_template('index.html')
 
 
-@application.route("/add", methods=['GET'])
-def about():
+@app.route("/add", methods=['GET'])
+def addpage():
     return render_template('add_employee.html')
 
-@application.route("/get", methods=['GET'])
-def about():
+@app.route("/get", methods=['GET'])
+def getpage():
     return render_template('get_employee.html')
 
-@application.route("/up", methods=['GET'])
-def about():
+@app.route("/up", methods=['GET'])
+def updatepage():
     return render_template('update_employees.html')
 
-@application.route("/del", methods=['GET'])
-def about():
+@app.route("/del", methods=['GET'])
+def deletepage():
     return render_template('delete_employees.html')
 
-@application.route("/addemp", methods=['POST'])
+@app.route("/addemp", methods=['POST'])
 def AddEmp():
     emp_id = request.form['emp_id']
     first_name = request.form['first_name']
@@ -96,7 +96,7 @@ def AddEmp():
     print("all modification done...")
     return render_template('add_employees_successful.html', name=emp_name)
 
-@application.route("/fetchdata", methods=['POST'])
+@app.route("/fetchdata", methods=['POST'])
 def FetchData():
     emp_id = request.form['emp_id']
 
@@ -132,7 +132,7 @@ def FetchData():
                            var=var,
                            image_url=img)
 
-@application.route("/update", methods=['POST'])
+@app.route("/update", methods=['POST'])
 def UpdateEmp():
     emp_id = request.form['emp_id']
     first_name = request.form['first_name']
@@ -193,7 +193,7 @@ def UpdateEmp():
     return render_template('show_employee_data.html', 
                             id=emp_id)
     
-@application.route("/delete", methods=['POST'])
+@app.route("/delete", methods=['POST'])
 def DeleteEmp():
     emp_id = request.form['emp_id']
 
