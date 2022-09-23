@@ -159,7 +159,7 @@ def UpdateEmp():
 def DeleteEmp():
     emp_id = request.form['emp_id']
 
-    query = "DELETE FROM Employee WHERE emp_id=%s)"
+    query = "DELETE FROM Employee WHERE emp_id=%s"
     cursor = db_conn.cursor()
 
     try:
