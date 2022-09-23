@@ -140,7 +140,7 @@ def UpdateEmp():
     pri_skill = request.form['pri_skill']
     location = request.form['location']
 
-    insert_sql = "UPDATE Employee SET first_name = %s, last_name = %s, pri_skill = %s, location = %s WHERE emp_id = %s"
+    insert_sql = "UPDATE Employee SET first_name=%s, last_name=%s, pri_skill=%s, location=%s WHERE emp_id=%s"
     cursor = db_conn.cursor()
 
     try:
