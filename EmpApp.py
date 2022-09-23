@@ -57,7 +57,7 @@ def AddEmp():
     location = request.form['location']
     emp_image_file = request.files['emp_image_file']
 
-    insert_sql = "INSERT INTO Employee VALUES (%s, %s, %s, %s, %s)"
+    insert_sql = "INSERT INTO employee VALUES (%s, %s, %s, %s, %s)"
     cursor = db_conn.cursor()
 
     if emp_image_file.filename == "":
@@ -101,7 +101,7 @@ def AddEmp():
 def FetchData():
     emp_id = request.form['emp_id']
 
-    query = "SELECT * FROM Employee WHERE emp_id = %s"
+    query = "SELECT * FROM employee WHERE emp_id = %s"
     cursor = db_conn.cursor()
 
     try:
@@ -159,7 +159,7 @@ def UpdateEmp():
 def DeleteEmp():
     emp_id = request.form['emp_id']
 
-    query = "DELETE FROM Employee WHERE emp_id=%s"
+    query = "DELETE FROM employee WHERE emp_id=%s"
     cursor = db_conn.cursor()
 
     try:
