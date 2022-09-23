@@ -57,7 +57,7 @@ def AddEmp():
     location = request.form['location']
     emp_image_file = request.files['emp_image_file']
 
-    insert_sql = "INSERT INTO employee VALUES (%s, %s, %s, %s, %s)"
+    insert_sql = "INSERT INTO Employee VALUES (%s, %s, %s, %s, %s)"
     cursor = db_conn.cursor()
 
     if emp_image_file.filename == "":
@@ -70,7 +70,6 @@ def AddEmp():
         emp_name = "" + first_name + " " + last_name
         # Uplaod image file in S3 #
         emp_image_file_name_in_s3 = "emp-id-" + str(emp_id) + "_image_file.jpg"
-        emp_resume_name_in_s3 = "emp-id-" + str(emp_id) + "_resume"
         s3 = boto3.resource('s3')
 
         try:
@@ -102,7 +101,7 @@ def AddEmp():
 def FetchData():
     emp_id = request.form['emp_id']
 
-    query = "SELECT * FROM <TABLE_NAME> WHERE emp_id = %s"
+    query = "SELECT * FROM Employee WHERE emp_id = %s"
     cursor = db_conn.cursor()
 
     try:
@@ -141,7 +140,7 @@ def UpdateEmp():
     pri_skill = request.form['pri_skill']
     location = request.form['location']
 
-    insert_sql = "INSERT INTO employee VALUES (%s, %s, %s, %s, %s)"
+    insert_sql = "INSERT INTO Employee VALUES (%s, %s, %s, %s, %s)"
     cursor = db_conn.cursor()
 
     try:
@@ -160,7 +159,7 @@ def UpdateEmp():
 def DeleteEmp():
     emp_id = request.form['emp_id']
 
-    query = "DELETE FROM employee WHERE emp_id=%s)"
+    query = "DELETE FROM Employee WHERE emp_id=%s)"
     cursor = db_conn.cursor()
 
     try:
@@ -168,7 +167,7 @@ def DeleteEmp():
         cursor.execute(query, emp_id)
         db_conn.commit()
         # Uplaod image file in S3 #
-        emp_image_file_name_in_s3 = "emp-id-" + str(emp_id) + "_image_file"
+        emp_image_file_name_in_s3 = "emp-id-" + str(emp_id) + "_image_file.jpg"
         s3 = boto3.resource('s3')
 
         try:
