@@ -108,7 +108,7 @@ def FetchData():
 
         details = cursor.execute(query, emp_id)
         for detail in details:
-            var = detail
+            print(detail)
 
         # Declaring the image file name
         emp_image_file_name_in_s3 = "emp-id-" + str(emp_id) + "_image_file.jpg"
@@ -129,7 +129,7 @@ def FetchData():
     print("all modification done...")
     return render_template('add_employees_successful.html', 
                            id=emp_id, 
-                           var=var,
+                           var=detail,
                            image_url=img)
 
 @app.route("/update", methods=['POST'])
