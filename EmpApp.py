@@ -140,12 +140,12 @@ def UpdateEmp():
     pri_skill = request.form['pri_skill']
     location = request.form['location']
 
-    insert_sql = "INSERT INTO Employee VALUES (%s, %s, %s, %s, %s)"
+    insert_sql = "UPDATE Employee SET first_name = %s, last_name = %s, pri_skill = %s, location = %s WHERE emp_id = %s"
     cursor = db_conn.cursor()
 
     try:
 
-        cursor.execute(insert_sql, (emp_id, first_name, last_name, pri_skill, location))
+        cursor.execute(insert_sql, (first_name, last_name, pri_skill, location, emp_id))
         db_conn.commit()
 
     finally:
