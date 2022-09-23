@@ -128,7 +128,6 @@ def FetchData():
 
     print("all modification done...")
     return render_template('add_employees_successful.html', 
-                           id=emp_id, 
                            var=detail,
                            image_url=img)
 
