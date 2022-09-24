@@ -106,7 +106,7 @@ def FetchData():
 
     try:
 
-        details = cursor.execute(query, {emp_id: int(emp_id) })
+        details = cursor.execute(query, {'emp_id': int(emp_id) })
         for detail in details:
             print(detail)
 
@@ -139,12 +139,12 @@ def UpdateEmp():
     pri_skill = request.form['pri_skill']
     location = request.form['location']
 
-    insert_sql = "UPDATE Employee SET first_name=%s, last_name=%s, pri_skill=%s, location=%s WHERE emp_id=%s"
+    sql = "UPDATE Employee SET first_name=%(fname)s, last_name=%(lname)s, pri_skill=%(pri_skill)s, location=%(location)s WHERE emp_id=%(emp_id)s"
     cursor = db_conn.cursor()
 
     try:
 
-        cursor.execute(insert_sql, (first_name, last_name, pri_skill, location, emp_id))
+        cursor.execute(sql, ({'fname': int(first_name)}, {'lname': int(last_name)}, {'pri_skill': int(pri_skill)}, {'location': int(location)}, {'emp_id': int(emp_id)}))
         db_conn.commit()
 
     finally:
@@ -163,7 +163,7 @@ def DeleteEmp():
 
     try:
 
-        cursor.execute(query, {emp_id: int(emp_id)})
+        cursor.execute(query, {'emp_id': int(emp_id)})
         db_conn.commit()
         # Uplaod image file in S3 #
         emp_image_file_name_in_s3 = "emp-id-" + str(emp_id) + "_image_file.jpg"
