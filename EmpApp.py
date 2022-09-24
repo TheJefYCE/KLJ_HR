@@ -95,7 +95,7 @@ def AddEmp():
     finally:
         cursor.close()
 
-    print("all modification done...")
+    print("successfully add one new employee...")
     return render_template('add_employees_successful.html', name=emp_name)
 
 @app.route("/fetchdata", methods=['GET','POST'])
@@ -121,8 +121,6 @@ def FetchData():
             file_stream = io.StringIO() 
             object.download_fileobj(file_stream) 
             img = mpimg.imread(file_stream)
-            imgplot = plt.imshow(img)
-            plt.show(imgplot)
 
         except Exception as e:
             return str(e)
@@ -130,7 +128,7 @@ def FetchData():
     finally:
         cursor.close()
 
-    print("all modification done...")
+    print("fetch employee data successfully...")
     return render_template('show_employee_data.html', 
                            detail=detail,
                            image_url=imgplot)
@@ -183,7 +181,7 @@ def DeleteEmp():
     finally:
         cursor.close()
 
-    print("all modification done...")
+    print("delete employee successful...")
     return render_template('delete_employee_successful.html', id=emp_id)
     
         
