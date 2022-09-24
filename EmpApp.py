@@ -127,7 +127,7 @@ def FetchData():
         cursor.close()
 
     print("all modification done...")
-    return render_template('add_employees_successful.html', 
+    return render_template('show_employee_data.html', 
                            var=detail,
                            image_url=img)
 
@@ -151,7 +151,7 @@ def UpdateEmp():
         cursor.close()
 
     print("all modification done...")
-    return render_template('show_employee_data.html', 
+    return render_template('/get', 
                             id=emp_id)
     
 @app.route("/delete", methods=['POST'])
