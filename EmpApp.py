@@ -101,14 +101,15 @@ def AddEmp():
 def FetchData():
     emp_id = request.form['emp_id']
 
-    query = "SELECT * FROM employee WHERE emp_id = %s"
+    query = "SELECT * FROM employee WHERE emp_id=%s"
     cursor = db_conn.cursor()
 
     try:
 
-        details = cursor.execute(query, emp_id)
-        for detail in details:
+        cursor.execute(query, emp_id)
+        for detail in cursor:
             print(detail)
+
 
         # Declaring the image file name
         emp_image_file_name_in_s3 = "emp-id-" + str(emp_id) + "_image_file.jpg"
