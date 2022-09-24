@@ -101,12 +101,12 @@ def AddEmp():
 def FetchData():
     emp_id = request.form['emp_id']
 
-    query = "SELECT * FROM employee WHERE emp_id = %(emp_id)s"
+    query = "SELECT * FROM employee WHERE emp_id = %s"
     cursor = db_conn.cursor()
 
     try:
 
-        details = cursor.execute(query, {'emp_id': int(emp_id) })
+        details = cursor.execute(query, emp_id)
         for detail in details:
             print(detail)
 
@@ -128,7 +128,7 @@ def FetchData():
 
     print("all modification done...")
     return render_template('show_employee_data.html', 
-                           var=detail,
+                           detail=detail,
                            image_url=img)
 
 @app.route("/update", methods=['POST'])
@@ -139,31 +139,31 @@ def UpdateEmp():
     pri_skill = request.form['pri_skill']
     location = request.form['location']
 
-    sql = "UPDATE Employee SET first_name=%(fname)s, last_name=%(lname)s, pri_skill=%(pri_skill)s, location=%(location)s WHERE emp_id=%(emp_id)s"
+    sql = "UPDATE Employee SET first_name=%s, last_name=%s, pri_skill=%s, location=%s WHERE emp_id=%s"
     cursor = db_conn.cursor()
 
     try:
 
-        cursor.execute(sql, ({'fname': int(first_name)}, {'lname': int(last_name)}, {'pri_skill': int(pri_skill)}, {'location': int(location)}, {'emp_id': int(emp_id)}))
+        cursor.execute(sql, (first_name, last_name, pri_skill, location, emp_id))
         db_conn.commit()
 
     finally:
         cursor.close()
 
     print("all modification done...")
-    return render_template('/get', 
+    return render_template('index.html', 
                             id=emp_id)
     
 @app.route("/delete", methods=['POST'])
 def DeleteEmp():
     emp_id = request.form['emp_id']
 
-    query = "DELETE FROM employee WHERE emp_id=%(emp_id)s"
+    query = "DELETE FROM employee WHERE emp_id=%s"
     cursor = db_conn.cursor()
 
     try:
 
-        cursor.execute(query, {'emp_id': int(emp_id)})
+        cursor.execute(query, emp_id)
         db_conn.commit()
         # Uplaod image file in S3 #
         emp_image_file_name_in_s3 = "emp-id-" + str(emp_id) + "_image_file.jpg"
