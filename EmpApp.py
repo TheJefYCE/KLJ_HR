@@ -48,7 +48,7 @@ def deletepage():
 def aboutuspage():
     return render_template('portfolio.html')
 
-@app.route("/addemp", methods=['POST'])
+@app.route("/addemp", methods=['GET','POST'])
 def AddEmp():
     emp_id = request.form['emp_id']
     first_name = request.form['first_name']
@@ -97,7 +97,7 @@ def AddEmp():
     print("all modification done...")
     return render_template('add_employees_successful.html', name=emp_name)
 
-@app.route("/fetchdata", methods=['POST'])
+@app.route("/fetchdata", methods=['GET','POST'])
 def FetchData():
     emp_id = request.form['emp_id']
 
@@ -131,7 +131,7 @@ def FetchData():
                            detail=detail,
                            image_url=img)
 
-@app.route("/update", methods=['POST'])
+@app.route("/update", methods=['GET','POST'])
 def UpdateEmp():
     emp_id = request.form['emp_id']
     first_name = request.form['first_name']
@@ -139,7 +139,7 @@ def UpdateEmp():
     pri_skill = request.form['pri_skill']
     location = request.form['location']
 
-    sql = "UPDATE Employee SET first_name=%s, last_name=%s, pri_skill=%s, location=%s WHERE emp_id=%s"
+    sql = "UPDATE employee SET first_name=%s, last_name=%s, pri_skill=%s, location=%s WHERE emp_id=%s"
     cursor = db_conn.cursor()
 
     try:
@@ -154,7 +154,7 @@ def UpdateEmp():
     return render_template('index.html', 
                             id=emp_id)
     
-@app.route("/delete", methods=['POST'])
+@app.route("/delete", methods=['GET', 'POST'])
 def DeleteEmp():
     emp_id = request.form['emp_id']
 
@@ -180,7 +180,7 @@ def DeleteEmp():
         cursor.close()
 
     print("all modification done...")
-    return render_template('delete_employees_successful.html', id=emp_id)
+    return render_template('delete_employee_successful.html', id=emp_id)
     
         
 
