@@ -101,12 +101,12 @@ def AddEmp():
 def FetchData():
     emp_id = request.form['emp_id']
 
-    query = "SELECT * FROM employee WHERE emp_id = %s"
+    query = "SELECT * FROM employee WHERE emp_id = %(emp_id)s"
     cursor = db_conn.cursor()
 
     try:
 
-        details = cursor.execute(query, emp_id)
+        details = cursor.execute(query, {emp_id: int(emp_id) })
         for detail in details:
             print(detail)
 
@@ -158,12 +158,12 @@ def UpdateEmp():
 def DeleteEmp():
     emp_id = request.form['emp_id']
 
-    query = "DELETE FROM employee WHERE emp_id=%s"
+    query = "DELETE FROM employee WHERE emp_id=%(emp_id)s"
     cursor = db_conn.cursor()
 
     try:
 
-        cursor.execute(query, emp_id)
+        cursor.execute(query, {emp_id: int(emp_id)})
         db_conn.commit()
         # Uplaod image file in S3 #
         emp_image_file_name_in_s3 = "emp-id-" + str(emp_id) + "_image_file.jpg"
