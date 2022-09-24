@@ -5,6 +5,7 @@ import boto3
 import io
 from config import *
 import matplotlib.image as mpimg
+from matplotlib import pyplot as plt
 
 app = Flask(__name__)
 
@@ -120,6 +121,8 @@ def FetchData():
             file_stream = io.StringIO() 
             object.download_fileobj(file_stream) 
             img = mpimg.imread(file_stream)
+            imgplot = plt.imshow(img)
+            plt.show(imgplot)
 
         except Exception as e:
             return str(e)
@@ -130,7 +133,7 @@ def FetchData():
     print("all modification done...")
     return render_template('show_employee_data.html', 
                            detail=detail,
-                           image_url=img)
+                           image_url=imgplot)
 
 @app.route("/update", methods=['GET','POST'])
 def UpdateEmp():
