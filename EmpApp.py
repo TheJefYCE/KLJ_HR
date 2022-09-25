@@ -116,20 +116,25 @@ def FetchData():
         emp_image_file_name_in_s3 = "emp-id-" + str(emp_id) + "_image_file"
         s3 = boto3.resource('s3')
 
-        # try:
-        #     object = custombucket.Object(emp_image_file_name_in_s3) 
-        #     file_stream = io.StringIO() 
-        #     object.download_fileobj(file_stream) 
-        #     img = mpimg.imread(file_stream)
+        try:
+            object = bucket.Object('tiles/10/S/DG/2015/12/7/0/B01.jp2')
 
-        # except Exception as e:
-        #     return str(e)
+            object.download_file('B01.jp2')
+
+            img=mpimg.imread('B01.jp2')
+
+            imgplot = plt.imshow(img)
+
+            plt.show(imgplot)
+
+        except Exception as e:
+            return str(e)
 
     finally:
         cursor.close()
 
     print("fetch employee data successfully...")
-    return render_template('show_employee_data.html', detail=result)
+    return render_template('show_employee_data.html', image_url=imgplot, detail=result)
 
 @app.route("/update", methods=['GET','POST'])
 def UpdateEmp():
