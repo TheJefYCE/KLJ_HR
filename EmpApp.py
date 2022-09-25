@@ -129,8 +129,7 @@ def FetchData():
         cursor.close()
 
     print("fetch employee data successfully...")
-    return render_template('show_employee_data.html', 
-                           detail=detail)
+    return render_template('show_employee_data.html', image_url=img, detail=detail)
 
 @app.route("/update", methods=['GET','POST'])
 def UpdateEmp():
