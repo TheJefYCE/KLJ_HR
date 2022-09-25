@@ -119,24 +119,26 @@ def FetchData():
         emp_image_file_name_in_s3 = "emp-id-" + str(emp_id) + "_image_file"
         s3 = boto3.resource('s3')
 
-        try:
-            contents = read_image_from_s3(custombucket, emp_image_file_name_in_s3)
-            print(contents)
+        imgplot="https://kohkuanjian-bucket.s3.amazonaws.com/" + emp_image_file_name_in_s3
 
-        except Exception as e:
-            return str(e)
+        # try:
+        #     contents = read_image_from_s3(custombucket, emp_image_file_name_in_s3)
+        #     print(contents)
+
+        # except Exception as e:
+        #     return str(e)
 
     finally:
         cursor.close()
 
-    def read_image_from_s3(bucket, key, region_name=customregion):
-        s3 = boto3.resource('s3')
-        bucket = s3.Bucket(bucket)
-        object = bucket.Object(key)
-        response = object.get()
-        file_stream = response['Body']
-        im = Image.open(file_stream)
-        return np.array(im)
+    # def read_image_from_s3(bucket, key, region_name=customregion):
+    #     s3 = boto3.resource('s3')
+    #     bucket = s3.Bucket(bucket)
+    #     object = bucket.Object(key)
+    #     response = object.get()
+    #     file_stream = response['Body']
+    #     im = Image.open(file_stream)
+    #     return np.array(im)
 
     print("fetch employee data successfully...")
     return render_template('show_employee_data.html', image_url=imgplot, detail=result)
