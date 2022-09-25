@@ -121,6 +121,7 @@ def FetchData():
 
         try:
             contents = read_image_from_s3(custombucket, emp_image_file_name_in_s3)
+            print(contents)
 
         except Exception as e:
             return str(e)
