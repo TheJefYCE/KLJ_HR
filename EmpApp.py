@@ -108,8 +108,8 @@ def FetchData():
     try:
 
         cursor.execute(query, emp_id)
-        for detail in range(cursor):
-            print(detail)
+        for result in cursor:
+            print(result)
 
 
         # Declaring the image file name
@@ -129,7 +129,7 @@ def FetchData():
         cursor.close()
 
     print("fetch employee data successfully...")
-    return render_template('show_employee_data.html', image_url=img, detail=detail)
+    return render_template('show_employee_data.html', image_url=img, detail=result)
 
 @app.route("/update", methods=['GET','POST'])
 def UpdateEmp():
