@@ -108,16 +108,16 @@ def FetchData():
     try:
 
         cursor.execute(query, emp_id)
+        print('result get...')
         for result in cursor:
             print(result)
-
 
         # Declaring the image file name
         emp_image_file_name_in_s3 = "emp-id-" + str(emp_id) + "_image_file"
         s3 = boto3.resource('s3')
 
         try:
-            object = bucket.Object(emp_image_file_name_in_s3) 
+            object = custombucket.Object(emp_image_file_name_in_s3) 
             file_stream = io.StringIO() 
             object.download_fileobj(file_stream) 
             img = mpimg.imread(file_stream)
