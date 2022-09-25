@@ -6,6 +6,9 @@ import io
 from config import *
 import matplotlib.image as mpimg
 from matplotlib import pyplot as plt
+from PIL import Image
+from io import BytesIO
+import numpy as np
 
 app = Flask(__name__)
 
@@ -117,21 +120,22 @@ def FetchData():
         s3 = boto3.resource('s3')
 
         try:
-            object = bucket.Object(emp_image_file_name_in_s3)
-
-            object.download_file(emp_image_file_name_in_s3)
-
-            img=mpimg.imread(emp_image_file_name_in_s3)
-
-            imgplot = plt.imshow(img)
-
-            plt.show(imgplot)
+            contents = read_image_from_s3(custombucket, emp_image_file_name_in_s3)
 
         except Exception as e:
             return str(e)
 
     finally:
         cursor.close()
+
+    def read_image_from_s3(bucket, key, region_name=customregion):
+        s3 = boto3.resource('s3')
+        bucket = s3.Bucket(bucket)
+        object = bucket.Object(key)
+        response = object.get()
+        file_stream = response['Body']
+        im = Image.open(file_stream)
+        return np.array(im)
 
     print("fetch employee data successfully...")
     return render_template('show_employee_data.html', image_url=imgplot, detail=result)
