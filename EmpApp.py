@@ -70,7 +70,7 @@ def AddEmp():
         db_conn.commit()
         emp_name = "" + first_name + " " + last_name
         # Uplaod image file in S3 #
-        emp_image_file_name_in_s3 = "emp-id-" + str(emp_id) + "_image_file"
+        emp_image_file_name_in_s3 = "emp-id-" + str(emp_id) + "_image_file.jpg"
         s3 = boto3.resource('s3')
 
         try:
@@ -113,7 +113,7 @@ def FetchData():
             print(result)
 
         # Declaring the image file name
-        emp_image_file_name_in_s3 = "emp-id-" + str(emp_id) + "_image_file"
+        emp_image_file_name_in_s3 = "emp-id-" + str(emp_id) + "_image_file.jpg"
         s3 = boto3.resource('s3')
 
         try:
@@ -171,7 +171,7 @@ def DeleteEmp():
         cursor.execute(query, emp_id)
         db_conn.commit()
         # Uplaod image file in S3 #
-        emp_image_file_name_in_s3 = "emp-id-" + str(emp_id) + "_image_file"
+        emp_image_file_name_in_s3 = "emp-id-" + str(emp_id) + "_image_file.jpg"
         s3 = boto3.resource('s3')
 
         try:
