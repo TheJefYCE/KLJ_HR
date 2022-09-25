@@ -117,11 +117,11 @@ def FetchData():
         s3 = boto3.resource('s3')
 
         try:
-            object = bucket.Object('tiles/10/S/DG/2015/12/7/0/B01.jp2')
+            object = bucket.Object(emp_image_file_name_in_s3)
 
-            object.download_file('B01.jp2')
+            object.download_file(emp_image_file_name_in_s3)
 
-            img=mpimg.imread('B01.jp2')
+            img=mpimg.imread(emp_image_file_name_in_s3)
 
             imgplot = plt.imshow(img)
 
