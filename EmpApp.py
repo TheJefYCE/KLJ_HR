@@ -119,7 +119,7 @@ def FetchData():
         emp_image_file_name_in_s3 = "emp-id-" + str(emp_id) + "_image_file"
         s3 = boto3.resource('s3')
 
-        imgplot="https://kohkuanjian-bucket.s3.amazonaws.com/" + emp_image_file_name_in_s3
+        imgplot="https://"+ custombucket + ".s3.amazonaws.com/" + emp_image_file_name_in_s3
 
         # try:
         #     contents = read_image_from_s3(custombucket, emp_image_file_name_in_s3)
