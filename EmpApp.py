@@ -108,7 +108,7 @@ def FetchData():
     try:
 
         cursor.execute(query, emp_id)
-        for detail in cursor:
+        for detail in range(cursor):
             print(detail)
 
 
