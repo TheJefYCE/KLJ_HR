@@ -116,14 +116,14 @@ def FetchData():
         emp_image_file_name_in_s3 = "emp-id-" + str(emp_id) + "_image_file"
         s3 = boto3.resource('s3')
 
-        try:
-            object = custombucket.Object(emp_image_file_name_in_s3) 
-            file_stream = io.StringIO() 
-            object.download_fileobj(file_stream) 
-            img = mpimg.imread(file_stream)
+        # try:
+        #     object = custombucket.Object(emp_image_file_name_in_s3) 
+        #     file_stream = io.StringIO() 
+        #     object.download_fileobj(file_stream) 
+        #     img = mpimg.imread(file_stream)
 
-        except Exception as e:
-            return str(e)
+        # except Exception as e:
+        #     return str(e)
 
     finally:
         cursor.close()
