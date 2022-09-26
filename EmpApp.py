@@ -1,15 +1,7 @@
-from ast import Not
 from flask import Flask, render_template, request
 from pymysql import connections
-import os
 import boto3
-import io
 from config import *
-import matplotlib.image as mpimg
-from matplotlib import pyplot as plt
-from PIL import Image
-from io import BytesIO
-import numpy as np
 
 app = Flask(__name__)
 
