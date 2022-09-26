@@ -62,7 +62,7 @@ def AddEmp():
     location = request.form['location']
     emp_image_file = request.files['emp_image_file']
 
-    select_sql = "SELECT emp_id, first_name FROM employee WHERE emp_id=%s"
+    select_sql = "SELECT emp_id, first_name, lastname FROM employee WHERE emp_id=%s"
     insert_sql = "INSERT INTO employee VALUES (%s, %s, %s, %s, %s)"
     cursor1 = db_conn.cursor()
     cursor2 = db_conn.cursor()
@@ -74,7 +74,7 @@ def AddEmp():
     if cursor1.execute(select_sql, emp_id):
         for result in cursor1:
             print(result)
-        return render_template('add_emp_failed.html', details=result)
+        return render_template('add_emp_failed.html', detail=result)
     else:
         try:
 
@@ -165,7 +165,7 @@ def UpdateEmp():
 
             cursor3.execute(fetch_sql, emp_id)
             print('result get...')
-            for result in cursor2:
+            for result in cursor3:
                 print(result)
 
         finally:
