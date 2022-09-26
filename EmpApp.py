@@ -70,7 +70,7 @@ def AddEmp():
     if emp_image_file.filename == "":
         return "Please select a file"
 
-    if (result in cursor1.execute(select_sql, emp_id)) == "" :
+    if len(cursor1.execute(select_sql, emp_id)) == 0 :
         try:
 
             cursor2.execute(insert_sql, (emp_id, first_name, last_name, pri_skill, location))
@@ -118,7 +118,7 @@ def FetchData():
     cursor1 = db_conn.cursor()
     cursor2 = db_conn.cursor()
 
-    if (result in cursor1.execute(select_sql1, emp_id)) == "":
+    if cursor1.execute(select_sql1, emp_id) == "":
         try:
 
             cursor2.execute(select_sql2, emp_id)
@@ -153,9 +153,7 @@ def UpdateEmp():
     cursor1 = db_conn.cursor()
     cursor2 = db_conn.cursor()
 
-    v_emp_id = cursor1.execute(select_sql, emp_id)
-
-    if  v_emp_id != "":
+    if  cursor1.execute(select_sql, emp_id) != "":
         try:
 
             cursor2.execute(update_sql, (first_name, last_name, pri_skill, location, emp_id))
