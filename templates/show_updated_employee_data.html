@@ -3,7 +3,7 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Add Employee - KLY HR</title>
+        <title>Get Employee Successful - KLY HR</title>
         <link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet'>
         <link rel="stylesheet" type= "text/css" href="{{ url_for('static', filename='style/stylemain.css')}}">
         <style>
@@ -19,7 +19,7 @@
                 <nav>
                     <ul>
                        <li><a href="/" class="zoom">HOME</a></li>
-                       <!-- <li><a href="add_employees.html" class="zoom">Add Employees</a></li> -->
+                       <li><a href="/add" class="zoom">ADD EMPLOYEE</a></li>
                        <li><a href="/get" class="zoom">SEARCH EMPLOYEE</a></li>
                        <!-- <li><a href="update_employees.html" class="zoom">Update Employees</a></li> -->
                        <!-- <li><a href="delete_employees.html" class="zoom">Delete Employees</a></li> -->
@@ -28,26 +28,29 @@
             </div>
         </header>
 
-        <div class="content">
-            <form action="/addemp" autocomplete="on" method = "POST" enctype="multipart/form-data">
+        <div class="content" style="text-align: center;">
 
-                <h2 style="color: grey">Enter Employee Details</h2>
+            <h1 style="color: DodgerBlue">Updated Employee Information</h1>
 
-		  		Employee ID:<br> <input style="height:25px;font-size:14pt; color:grey;" type="number" name="emp_id" autofocus size="40"><br><br>
+            <form>
 
-		  		First Name:<br> <input style="height:25px;font-size:14pt;color:grey;" type="text" name="first_name" ><br><br>
+				<div>
+                    
+			  		<img src="{{ image_url }}" alt="employee_image" class="profile-pic"><br><br>
 
-		  		Last Name:<br> <input style="height:25px;font-size:14pt;color:grey;" type="text" name="last_name"><br><br>
+			  		Employee ID:<br> {{ detail[0] }} <br><br>
 
-		  		Primary Skills:<br> <input style="height:25px;font-size:14pt;color:grey;" type="text" name="pri_skill"><br><br>
+			  		First Name:<br> {{ detail[1] }} <br><br>
 
-		  		Location:<br> <input style="height:25px;font-size:14pt;color:grey;" type="text" name="location"><br><br>
+			  		Last Name:<br> {{ detail[2] }} <br><br>
 
-		  		Image: <input type=file name="emp_image_file" style="height:25px;font-size:10pt;color:grey;"> <br><br>
+			  		Primary Interest:<br> {{ detail[3] }} <br><br>
 
-                <!-- Resume: <input type=file name="emp_resume_file" style="height:25px;font-size:10pt;color:grey;"> <br><br> -->
+			  		Location:<br> {{ detail[4] }} <br><br>
 
-		  		<button type="submit" style="background: grey; height: 45px; width: 200px; color: white; size: 5; font:oblique;">ADD</button>
+			  		<button type="submit" style="background: grey; height: 45px; width: 200px; color:white; font:oblique;" formaction="/update">BACK</button><br><br>
+
+			  	</div>
 
 			</form>
         </div>

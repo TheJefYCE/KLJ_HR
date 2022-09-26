@@ -62,7 +62,7 @@ def AddEmp():
     location = request.form['location']
     emp_image_file = request.files['emp_image_file']
 
-    select_sql = "SELECT emp_id FROM employee WHERE emp_id=%s"
+    select_sql = "SELECT emp_id, first_name FROM employee WHERE emp_id=%s"
     insert_sql = "INSERT INTO employee VALUES (%s, %s, %s, %s, %s)"
     cursor1 = db_conn.cursor()
     cursor2 = db_conn.cursor()
@@ -70,9 +70,8 @@ def AddEmp():
     if emp_image_file.filename == "":
         return "Please select a file"
 
-    v_emp_id = cursor1.execute(select_sql, emp_id)
 
-    if v_emp_id:
+    if cursor1.execute(select_sql, emp_id):
         for result in cursor1:
             print(result)
         return render_template('add_emp_failed.html', details=result)
@@ -121,8 +120,6 @@ def FetchData():
     cursor2 = db_conn.cursor()
 
     if cursor1.execute(select_sql1, emp_id):
-        return render_template('get_emp_not_exist.html')
-    else:
         try:
 
             cursor2.execute(select_sql2, emp_id)
@@ -138,6 +135,8 @@ def FetchData():
 
         finally:
             cursor2.close()
+    else:
+        return render_template('get_emp_not_exist.html')
 
     print("fetch employee data successfully...")
     return render_template('show_employee_data.html', image_url=imgplot, detail=result)
@@ -152,8 +151,10 @@ def UpdateEmp():
 
     select_sql = "SELECT emp_id FROM employee WHERE emp_id=%s"
     update_sql = "UPDATE employee SET first_name=%s, last_name=%s, pri_skill=%s, location=%s WHERE emp_id=%s"
+    fetch_sql = "SELECT * FROM employee WHERE emp_id=%s"
     cursor1 = db_conn.cursor()
     cursor2 = db_conn.cursor()
+    cursor3 = db_conn.cursor()
 
     if cursor1.execute(select_sql, emp_id):
         try:
@@ -162,14 +163,19 @@ def UpdateEmp():
             print("all modification done...")
             db_conn.commit()
 
+            cursor3.execute(fetch_sql, emp_id)
+            print('result get...')
+            for result in cursor2:
+                print(result)
+
         finally:
             cursor2.close()
     else:
         return render_template('up_emp_not_exist.html')
 
     
-    return render_template('index.html', 
-                            id=emp_id)
+    return render_template('show_updated_employee_data.html', 
+                            detail=result)
     
 @app.route("/delete", methods=['GET', 'POST'])
 def DeleteEmp():
