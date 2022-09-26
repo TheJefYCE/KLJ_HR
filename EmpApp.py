@@ -1,3 +1,6 @@
+from ast import Not
+from asyncio.windows_events import NULL
+from curses.ascii import NUL
 from flask import Flask, render_template, request
 from pymysql import connections
 import os
@@ -61,42 +64,49 @@ def AddEmp():
     location = request.form['location']
     emp_image_file = request.files['emp_image_file']
 
+    select_sql = "SELECT emp_id, last_name FROM employee WHERE emp_id=%s"
     insert_sql = "INSERT INTO employee VALUES (%s, %s, %s, %s, %s)"
-    cursor = db_conn.cursor()
+    cursor1 = db_conn.cursor()
+    cursor2 = db_conn.cursor()
 
     if emp_image_file.filename == "":
         return "Please select a file"
 
-    try:
-
-        cursor.execute(insert_sql, (emp_id, first_name, last_name, pri_skill, location))
-        db_conn.commit()
-        emp_name = "" + first_name + " " + last_name
-        # Uplaod image file in S3 #
-        emp_image_file_name_in_s3 = "emp-id-" + str(emp_id) + "_image_file"
-        s3 = boto3.resource('s3')
-
+    if cursor1.execute(select_sql, emp_id) == NULL :
         try:
-            print("Data inserted in MySQL RDS... uploading image to S3...")
-            s3.Bucket(custombucket).put_object(Key=emp_image_file_name_in_s3, Body=emp_image_file)
-            bucket_location = boto3.client('s3').get_bucket_location(Bucket=custombucket)
-            s3_location = (bucket_location['LocationConstraint'])
 
-            if s3_location is None:
-                s3_location = ''
-            else:
-                s3_location = '-' + s3_location
+            cursor2.execute(insert_sql, (emp_id, first_name, last_name, pri_skill, location))
+            db_conn.commit()
+            emp_name = "" + first_name + " " + last_name
+            # Uplaod image file in S3 #
+            emp_image_file_name_in_s3 = "emp-id-" + str(emp_id) + "_image_file"
+            s3 = boto3.resource('s3')
 
-            object_url = "https://s3{0}.amazonaws.com/{1}/{2}".format(
-                s3_location,
-                custombucket,
-                emp_image_file_name_in_s3)
+            try:
+                print("Data inserted in MySQL RDS... uploading image to S3...")
+                s3.Bucket(custombucket).put_object(Key=emp_image_file_name_in_s3, Body=emp_image_file)
+                bucket_location = boto3.client('s3').get_bucket_location(Bucket=custombucket)
+                s3_location = (bucket_location['LocationConstraint'])
 
-        except Exception as e:
-            return str(e)
+                if s3_location is None:
+                    s3_location = ''
+                else:
+                    s3_location = '-' + s3_location
 
-    finally:
-        cursor.close()
+                object_url = "https://s3{0}.amazonaws.com/{1}/{2}".format(
+                    s3_location,
+                    custombucket,
+                    emp_image_file_name_in_s3)
+
+            except Exception as e:
+                return str(e)
+
+        finally:
+            cursor2.close()
+    else:
+        for result in cursor1:
+            print(result)
+        return render_template('add_emp_failed.html', details=result)
 
     print("successfully add one new employee...")
     return render_template('add_employees_successful.html', name=emp_name)
@@ -105,40 +115,28 @@ def AddEmp():
 def FetchData():
     emp_id = request.form['emp_id']
 
-    query = "SELECT * FROM employee WHERE emp_id=%s"
-    cursor = db_conn.cursor()
+    select_sql = "SELECT * FROM employee WHERE emp_id=%s"
+    cursor1 = db_conn.cursor()
+    cursor2 = db_conn.cursor()
 
-    try:
+    if cursor1.execute(select_sql, emp_id) == NULL:
+        try:
 
-        cursor.execute(query, emp_id)
-        print('result get...')
-        for result in cursor:
-            print(result)
+            cursor2.execute(select_sql, emp_id)
+            print('result get...')
+            for result in cursor2:
+                print(result)
 
-        # Declaring the image file name
-        emp_image_file_name_in_s3 = "emp-id-" + str(emp_id) + "_image_file"
-        s3 = boto3.resource('s3')
+            # Declaring the image file name
+            emp_image_file_name_in_s3 = "emp-id-" + str(emp_id) + "_image_file"
+            s3 = boto3.resource('s3')
 
-        imgplot="https://"+ custombucket + ".s3.amazonaws.com/" + emp_image_file_name_in_s3
+            imgplot="https://"+ custombucket + ".s3.amazonaws.com/" + emp_image_file_name_in_s3
 
-        # try:
-        #     contents = read_image_from_s3(custombucket, emp_image_file_name_in_s3)
-        #     print(contents)
-
-        # except Exception as e:
-        #     return str(e)
-
-    finally:
-        cursor.close()
-
-    # def read_image_from_s3(bucket, key, region_name=customregion):
-    #     s3 = boto3.resource('s3')
-    #     bucket = s3.Bucket(bucket)
-    #     object = bucket.Object(key)
-    #     response = object.get()
-    #     file_stream = response['Body']
-    #     im = Image.open(file_stream)
-    #     return np.array(im)
+        finally:
+            cursor2.close()
+    else:
+        return render_template('get_emp_not_exist.html')
 
     print("fetch employee data successfully...")
     return render_template('show_employee_data.html', image_url=imgplot, detail=result)
@@ -151,18 +149,24 @@ def UpdateEmp():
     pri_skill = request.form['pri_skill']
     location = request.form['location']
 
-    sql = "UPDATE employee SET first_name=%s, last_name=%s, pri_skill=%s, location=%s WHERE emp_id=%s"
-    cursor = db_conn.cursor()
+    select_sql = "SELECT emp_id FROM employee WHERE emp_id=%s"
+    update_sql = "UPDATE employee SET first_name=%s, last_name=%s, pri_skill=%s, location=%s WHERE emp_id=%s"
+    cursor1 = db_conn.cursor()
+    cursor2 = db_conn.cursor()
 
-    try:
+    if cursor1.execute(select_sql, emp_id) != NULL:
+        try:
 
-        cursor.execute(sql, (first_name, last_name, pri_skill, location, emp_id))
-        db_conn.commit()
+            cursor2.execute(update_sql, (first_name, last_name, pri_skill, location, emp_id))
+            print("all modification done...")
+            db_conn.commit()
 
-    finally:
-        cursor.close()
+        finally:
+            cursor2.close()
+    else:
+        return render_template('up_emp_not_exist.html')
 
-    print("all modification done...")
+    
     return render_template('index.html', 
                             id=emp_id)
     
@@ -170,26 +174,31 @@ def UpdateEmp():
 def DeleteEmp():
     emp_id = request.form['emp_id']
 
+    select_sql = "SELECT emp_id FROM employee WHERE emp_id=%s"
     query = "DELETE FROM employee WHERE emp_id=%s"
-    cursor = db_conn.cursor()
+    cursor1 = db_conn.cursor()
+    cursor2 = db_conn.cursor()
 
-    try:
-
-        cursor.execute(query, emp_id)
-        db_conn.commit()
-        # Uplaod image file in S3 #
-        emp_image_file_name_in_s3 = "emp-id-" + str(emp_id) + "_image_file"
-        s3 = boto3.resource('s3')
-
+    if cursor1.execute(select_sql, emp_id) != NULL:
         try:
-            print("Data removed from MySQL RDS... deleting related files in S3...")
-            s3.Object(custombucket, emp_image_file_name_in_s3).delete()
 
-        except Exception as e:
-            return str(e)
+            cursor2.execute(query, emp_id)
+            db_conn.commit()
+            # Uplaod image file in S3 #
+            emp_image_file_name_in_s3 = "emp-id-" + str(emp_id) + "_image_file"
+            s3 = boto3.resource('s3')
 
-    finally:
-        cursor.close()
+            try:
+                print("Data removed from MySQL RDS... deleting related files in S3...")
+                s3.Object(custombucket, emp_image_file_name_in_s3).delete()
+
+            except Exception as e:
+                return str(e)
+
+        finally:
+            cursor2.close()
+    else:
+        return render_template('del_emp_not_exist.html')
 
     print("delete employee successful...")
     return render_template('delete_employee_successful.html', id=emp_id)
