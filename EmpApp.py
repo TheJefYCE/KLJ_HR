@@ -62,7 +62,7 @@ def AddEmp():
     location = request.form['location']
     emp_image_file = request.files['emp_image_file']
 
-    select_sql = "SELECT * FROM employee WHERE emp_id=%s"
+    select_sql = "SELECT emp_id FROM employee WHERE emp_id=%s"
     insert_sql = "INSERT INTO employee VALUES (%s, %s, %s, %s, %s)"
     cursor1 = db_conn.cursor()
     cursor2 = db_conn.cursor()
@@ -70,7 +70,13 @@ def AddEmp():
     if emp_image_file.filename == "":
         return "Please select a file"
 
-    if len(cursor1.execute(select_sql, emp_id)) == 0 :
+    v_emp_id = cursor1.execute(select_sql, emp_id)
+
+    if v_emp_id:
+        for result in cursor1:
+            print(result)
+        return render_template('add_emp_failed.html', details=result)
+    else:
         try:
 
             cursor2.execute(insert_sql, (emp_id, first_name, last_name, pri_skill, location))
@@ -101,10 +107,6 @@ def AddEmp():
 
         finally:
             cursor2.close()
-    else:
-        for result in cursor1:
-            print(result)
-        return render_template('add_emp_failed.html', details=result)
 
     print("successfully add one new employee...")
     return render_template('add_employees_successful.html', name=emp_name)
@@ -118,7 +120,9 @@ def FetchData():
     cursor1 = db_conn.cursor()
     cursor2 = db_conn.cursor()
 
-    if len(cursor1.execute(select_sql1, emp_id)) == 0:
+    if cursor1.execute(select_sql1, emp_id):
+        return render_template('get_emp_not_exist.html')
+    else:
         try:
 
             cursor2.execute(select_sql2, emp_id)
@@ -134,8 +138,6 @@ def FetchData():
 
         finally:
             cursor2.close()
-    else:
-        return render_template('get_emp_not_exist.html')
 
     print("fetch employee data successfully...")
     return render_template('show_employee_data.html', image_url=imgplot, detail=result)
@@ -153,7 +155,7 @@ def UpdateEmp():
     cursor1 = db_conn.cursor()
     cursor2 = db_conn.cursor()
 
-    if  len(cursor1.execute(select_sql, emp_id)) != 0:
+    if cursor1.execute(select_sql, emp_id):
         try:
 
             cursor2.execute(update_sql, (first_name, last_name, pri_skill, location, emp_id))
@@ -178,7 +180,7 @@ def DeleteEmp():
     cursor1 = db_conn.cursor()
     cursor2 = db_conn.cursor()
 
-    if len(cursor1.execute(select_sql, emp_id)) != 0:
+    if cursor1.execute(select_sql, emp_id):
         try:
 
             cursor2.execute(query, emp_id)
