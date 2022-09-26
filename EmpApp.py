@@ -1,5 +1,4 @@
 from ast import Not
-from asyncio.windows_events import NULL
 from curses.ascii import NUL
 from flask import Flask, render_template, request
 from pymysql import connections
@@ -72,7 +71,7 @@ def AddEmp():
     if emp_image_file.filename == "":
         return "Please select a file"
 
-    if cursor1.execute(select_sql, emp_id) == NULL :
+    if cursor1.execute(select_sql, emp_id) == "" :
         try:
 
             cursor2.execute(insert_sql, (emp_id, first_name, last_name, pri_skill, location))
@@ -119,7 +118,7 @@ def FetchData():
     cursor1 = db_conn.cursor()
     cursor2 = db_conn.cursor()
 
-    if cursor1.execute(select_sql, emp_id) == NULL:
+    if cursor1.execute(select_sql, emp_id) == "":
         try:
 
             cursor2.execute(select_sql, emp_id)
@@ -154,7 +153,7 @@ def UpdateEmp():
     cursor1 = db_conn.cursor()
     cursor2 = db_conn.cursor()
 
-    if cursor1.execute(select_sql, emp_id) != NULL:
+    if cursor1.execute(select_sql, emp_id) != "":
         try:
 
             cursor2.execute(update_sql, (first_name, last_name, pri_skill, location, emp_id))
@@ -179,7 +178,7 @@ def DeleteEmp():
     cursor1 = db_conn.cursor()
     cursor2 = db_conn.cursor()
 
-    if cursor1.execute(select_sql, emp_id) != NULL:
+    if cursor1.execute(select_sql, emp_id) != "":
         try:
 
             cursor2.execute(query, emp_id)
