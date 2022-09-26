@@ -1,5 +1,4 @@
 from ast import Not
-from curses.ascii import NUL
 from flask import Flask, render_template, request
 from pymysql import connections
 import os
@@ -71,7 +70,7 @@ def AddEmp():
     if emp_image_file.filename == "":
         return "Please select a file"
 
-    if cursor1.execute(select_sql, emp_id) == "" :
+    if (result in cursor1.execute(select_sql, emp_id)) == "" :
         try:
 
             cursor2.execute(insert_sql, (emp_id, first_name, last_name, pri_skill, location))
@@ -114,14 +113,15 @@ def AddEmp():
 def FetchData():
     emp_id = request.form['emp_id']
 
-    select_sql = "SELECT * FROM employee WHERE emp_id=%s"
+    select_sql1 = "SELECT emp_id FROM employee WHERE emp_id=%s"
+    select_sql2 = "SELECT * FROM employee WHERE emp_id=%s"
     cursor1 = db_conn.cursor()
     cursor2 = db_conn.cursor()
 
-    if cursor1.execute(select_sql, emp_id) == "":
+    if (result in cursor1.execute(select_sql1, emp_id)) == "":
         try:
 
-            cursor2.execute(select_sql, emp_id)
+            cursor2.execute(select_sql2, emp_id)
             print('result get...')
             for result in cursor2:
                 print(result)
@@ -153,7 +153,9 @@ def UpdateEmp():
     cursor1 = db_conn.cursor()
     cursor2 = db_conn.cursor()
 
-    if cursor1.execute(select_sql, emp_id) != "":
+    v_emp_id = cursor1.execute(select_sql, emp_id)
+
+    if  v_emp_id != "":
         try:
 
             cursor2.execute(update_sql, (first_name, last_name, pri_skill, location, emp_id))
@@ -178,7 +180,7 @@ def DeleteEmp():
     cursor1 = db_conn.cursor()
     cursor2 = db_conn.cursor()
 
-    if cursor1.execute(select_sql, emp_id) != "":
+    if result in cursor1.execute(select_sql, emp_id) != "":
         try:
 
             cursor2.execute(query, emp_id)
